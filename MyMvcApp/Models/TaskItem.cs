@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace MyMvcApp.Models
 {
@@ -8,14 +7,17 @@ namespace MyMvcApp.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(150)]
         public string Title { get; set; } = string.Empty;
 
+        [StringLength(1000)]
         public string? Description { get; set; }
 
         public TaskPriority Priority { get; set; } = TaskPriority.Medium;
 
         public TaskStatus Status { get; set; } = TaskStatus.New;
 
+        [DataType(DataType.Date)]
         public DateTime? Deadline { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
