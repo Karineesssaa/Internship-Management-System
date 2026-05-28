@@ -12,6 +12,7 @@ namespace MyMvcApp.Models
         public TaskItem? TaskItem { get; set; }
 
         public string? StudentId { get; set; }
+        public ApplicationUser? Student { get; set; }
 
         [Range(0, 100)]
         public int Value { get; set; }

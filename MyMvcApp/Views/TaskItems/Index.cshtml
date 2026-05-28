@@ -32,6 +32,9 @@
                 Internship Group
             </th>
             <th>
+                Assigned Student
+            </th>
+            <th>
                 Actions
             </th>
         </tr>
@@ -51,7 +54,7 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Priority)
-                </td>
+                </td>іі
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
@@ -63,6 +66,9 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.InternshipGroup.Name)
+                </td>
+                <td>
+                    @item.AssignedToUser?.Email
                 </td>
 
                 <td>

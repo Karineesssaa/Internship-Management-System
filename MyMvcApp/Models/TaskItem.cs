@@ -23,11 +23,12 @@ namespace MyMvcApp.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public string? AssignedToUserId { get; set; }
+        public ApplicationUser? AssignedToUser { get; set; }
 
         public string? CreatedByUserId { get; set; }
+        public ApplicationUser? CreatedByUser { get; set; }
 
         public int? InternshipGroupId { get; set; }
-
         public InternshipGroup? InternshipGroup { get; set; }
 
         public List<TaskComment> Comments { get; set; } = new();

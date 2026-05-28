@@ -45,6 +45,16 @@
             </div>
 
             <div class="mb-3">
+                <label asp-for="AssignedToUserId" class="form-label">Assign to Student</label>
+                <select asp-for="AssignedToUserId"
+                        class="form-control"
+                        asp-items="ViewBag.AssignedToUserId">
+                    <option value="">-- Select student --</option>
+                </select>
+                <span asp-validation-for="AssignedToUserId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
                 <label asp-for="InternshipGroupId" class="form-label">Internship Group</label>
                 <select asp-for="InternshipGroupId" class="form-control" asp-items="ViewBag.InternshipGroupId"></select>
                 <span asp-validation-for="InternshipGroupId" class="text-danger"></span>

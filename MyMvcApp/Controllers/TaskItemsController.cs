@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +27,25 @@ namespace MyMvcApp.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.TaskItems
-                .Include(t => t.InternshipGroup);
+                .Include(t => t.InternshipGroup)
+                .Include(t => t.AssignedToUser)
+                .Include(t => t.CreatedByUser);
 
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        // GET: TaskItems/MyTasks
+        public async Task<IActionResult> MyTasks()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var tasks = await _context.TaskItems
+                .Include(t => t.InternshipGroup)
+                .Include(t => t.AssignedToUser)
+                .Where(t => t.AssignedToUserId == userId)
+                .ToListAsync();
+
+            return View(tasks);
         }
 
         // GET: TaskItems/Details/5
@@ -43,6 +58,8 @@ namespace MyMvcApp.Controllers
 
             var taskItem = await _context.TaskItems
                 .Include(t => t.InternshipGroup)
+                .Include(t => t.AssignedToUser)
+                .Include(t => t.CreatedByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (taskItem == null)
@@ -54,16 +71,14 @@ namespace MyMvcApp.Controllers
         }
 
         // GET: TaskItems/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["InternshipGroupId"] =
-                new SelectList(_context.InternshipGroups, "Id", "Name");
+            var students = await _userManager.GetUsersInRoleAsync("Student");
 
-            ViewData["Priority"] =
-                new SelectList(Enum.GetValues(typeof(TaskPriority)));
-
-            ViewData["Status"] =
-                new SelectList(Enum.GetValues(typeof(MyMvcApp.Models.TaskStatus)));
+            ViewData["AssignedToUserId"] = new SelectList(students, "Id", "Email");
+            ViewData["InternshipGroupId"] = new SelectList(_context.InternshipGroups, "Id", "Name");
+            ViewData["Priority"] = new SelectList(Enum.GetValues(typeof(TaskPriority)));
+            ViewData["Status"] = new SelectList(Enum.GetValues(typeof(MyMvcApp.Models.TaskStatus)));
 
             return View();
         }
@@ -72,7 +87,7 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Title,Description,Priority,Status,Deadline,InternshipGroupId")]
+            [Bind("Title,Description,Priority,Status,Deadline,AssignedToUserId,InternshipGroupId")]
             TaskItem taskItem)
         {
             if (ModelState.IsValid)
@@ -81,28 +96,24 @@ namespace MyMvcApp.Controllers
                 taskItem.CreatedByUserId = _userManager.GetUserId(User);
 
                 _context.Add(taskItem);
-
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
 
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+
+            ViewData["AssignedToUserId"] =
+                new SelectList(students, "Id", "Email", taskItem.AssignedToUserId);
+
             ViewData["InternshipGroupId"] =
-                new SelectList(
-                    _context.InternshipGroups,
-                    "Id",
-                    "Name",
-                    taskItem.InternshipGroupId);
+                new SelectList(_context.InternshipGroups, "Id", "Name", taskItem.InternshipGroupId);
 
             ViewData["Priority"] =
-                new SelectList(
-                    Enum.GetValues(typeof(TaskPriority)),
-                    taskItem.Priority);
+                new SelectList(Enum.GetValues(typeof(TaskPriority)), taskItem.Priority);
 
             ViewData["Status"] =
-                new SelectList(
-                    Enum.GetValues(typeof(MyMvcApp.Models.TaskStatus)),
-                    taskItem.Status);
+                new SelectList(Enum.GetValues(typeof(MyMvcApp.Models.TaskStatus)), taskItem.Status);
 
             return View(taskItem);
         }
@@ -121,6 +132,11 @@ namespace MyMvcApp.Controllers
             {
                 return NotFound();
             }
+
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+
+            ViewData["AssignedToUserId"] =
+                new SelectList(students, "Id", "Email", taskItem.AssignedToUserId);
 
             ViewData["InternshipGroupId"] =
                 new SelectList(
@@ -147,7 +163,7 @@ namespace MyMvcApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             int id,
-            [Bind("Id,Title,Description,Priority,Status,Deadline,InternshipGroupId")]
+            [Bind("Id,Title,Description,Priority,Status,Deadline,AssignedToUserId,InternshipGroupId")]
             TaskItem taskItem)
         {
             if (id != taskItem.Id)
@@ -190,6 +206,11 @@ namespace MyMvcApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+
+            ViewData["AssignedToUserId"] =
+                new SelectList(students, "Id", "Email", taskItem.AssignedToUserId);
+
             ViewData["InternshipGroupId"] =
                 new SelectList(
                     _context.InternshipGroups,
@@ -220,6 +241,8 @@ namespace MyMvcApp.Controllers
 
             var taskItem = await _context.TaskItems
                 .Include(t => t.InternshipGroup)
+                .Include(t => t.AssignedToUser)
+                .Include(t => t.CreatedByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (taskItem == null)
