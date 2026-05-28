@@ -1,0 +1,62 @@
+﻿@model MyMvcApp.Models.Submission
+
+@{
+    ViewData["Title"] = "Submit Task Result";
+}
+
+<h1>Submit Task Result</h1>
+
+@if (Model.TaskItem != null)
+{
+    <div class="alert alert-info">
+        <strong>Task:</strong> @Model.TaskItem.Title
+    </div>
+}
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="TaskItemId" />
+
+            <div class="mb-3">
+                <label asp-for="GitHubLink" class="form-label">GitHub Link</label>
+                <input asp-for="GitHubLink" class="form-control" placeholder="https://github.com/..." />
+                <span asp-validation-for="GitHubLink" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Comment" class="form-label">Comment</label>
+                <textarea asp-for="Comment" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FilePath" class="form-label">File Path / Report Link</label>
+                <input asp-for="FilePath" class="form-control" />
+                <span asp-validation-for="FilePath" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Result</button>
+
+            <a asp-controller="TaskItems"
+               asp-action="MyTasks"
+               class="btn btn-secondary">
+                Back to My Tasks
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

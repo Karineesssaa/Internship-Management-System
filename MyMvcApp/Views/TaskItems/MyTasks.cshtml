@@ -35,6 +35,27 @@
                        class="btn btn-sm btn-info">
                         Details
                     </a>
+
+                    @if (item.Status == MyMvcApp.Models.TaskStatus.New)
+                    {
+                        <form asp-action="StartTask"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              style="display:inline;">
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit" class="btn btn-sm btn-warning">
+                                Start Task
+                            </button>
+                        </form>
+                    }
+
+                    <a asp-controller="Submissions"
+                       asp-action="Create"
+                       asp-route-taskItemId="@item.Id"
+                       class="btn btn-sm btn-success">
+                        Submit Result
+                    </a>
                 </td>
             </tr>
         }

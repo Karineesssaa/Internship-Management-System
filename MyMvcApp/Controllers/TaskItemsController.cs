@@ -24,14 +24,39 @@ namespace MyMvcApp.Controllers
         }
 
         // GET: TaskItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? status, string? studentId, int? groupId)
         {
-            var applicationDbContext = _context.TaskItems
+            var query = _context.TaskItems
                 .Include(t => t.InternshipGroup)
                 .Include(t => t.AssignedToUser)
-                .Include(t => t.CreatedByUser);
+                .Include(t => t.CreatedByUser)
+                .AsQueryable();
 
-            return View(await applicationDbContext.ToListAsync());
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (Enum.TryParse<MyMvcApp.Models.TaskStatus>(status, out var parsedStatus))
+                {
+                    query = query.Where(t => t.Status == parsedStatus);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(studentId))
+            {
+                query = query.Where(t => t.AssignedToUserId == studentId);
+            }
+
+            if (groupId.HasValue)
+            {
+                query = query.Where(t => t.InternshipGroupId == groupId.Value);
+            }
+
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+
+            ViewData["Status"] = new SelectList(Enum.GetValues(typeof(MyMvcApp.Models.TaskStatus)), status);
+            ViewData["Students"] = new SelectList(students, "Id", "Email", studentId);
+            ViewData["Groups"] = new SelectList(_context.InternshipGroups, "Id", "Name", groupId);
+
+            return View(await query.ToListAsync());
         }
 
         // GET: TaskItems/MyTasks
@@ -46,6 +71,30 @@ namespace MyMvcApp.Controllers
                 .ToListAsync();
 
             return View(tasks);
+        }
+
+        // POST: TaskItems/StartTask/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StartTask(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var taskItem = await _context.TaskItems
+                .FirstOrDefaultAsync(t => t.Id == id && t.AssignedToUserId == userId);
+
+            if (taskItem == null)
+            {
+                return NotFound();
+            }
+
+            if (taskItem.Status == MyMvcApp.Models.TaskStatus.New)
+            {
+                taskItem.Status = MyMvcApp.Models.TaskStatus.InProgress;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(MyTasks));
         }
 
         // GET: TaskItems/Details/5

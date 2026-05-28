@@ -6,6 +6,34 @@
 
 <h1>Tasks</h1>
 
+<form asp-action="Index" method="get" class="row mb-3">
+    <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-control" asp-items="ViewBag.Status">
+            <option value="">All statuses</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Student</label>
+        <select name="studentId" class="form-control" asp-items="ViewBag.Students">
+            <option value="">All students</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Group</label>
+        <select name="groupId" class="form-control" asp-items="ViewBag.Groups">
+            <option value="">All groups</option>
+        </select>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary me-2">Filter</button>
+        <a asp-action="Index" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New Task</a>
 </p>
