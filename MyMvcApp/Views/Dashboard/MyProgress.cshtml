@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "My Progress";
+}
+
+<h1>My Progress</h1>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Total Tasks</h5>
+                <h2>@ViewBag.TotalTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>New</h5>
+                <h2>@ViewBag.NewTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>In Progress</h5>
+                <h2>@ViewBag.InProgressTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Submitted</h5>
+                <h2>@ViewBag.SubmittedTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Approved</h5>
+                <h2>@ViewBag.ApprovedTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Rejected</h5>
+                <h2>@ViewBag.RejectedTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Need Changes</h5>
+                <h2>@ViewBag.NeedChangesTasks</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Average Grade</h5>
+                <h2>@ViewBag.AverageGrade</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-controller="Dashboard" asp-action="Student" class="btn btn-secondary">
+    Back to Dashboard
+</a>

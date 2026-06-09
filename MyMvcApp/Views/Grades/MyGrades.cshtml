@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MyMvcApp.Models.Grade>
+
+@{
+    ViewData["Title"] = "My Grades";
+}
+
+<h1>My Grades</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You do not have any grades yet.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Grade</th>
+                <th>Mentor Comment</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TaskItem?.Title</td>
+                    <td>@item.Value</td>
+                    <td>@item.MentorComment</td>
+                    <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

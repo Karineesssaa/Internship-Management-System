@@ -1,0 +1,60 @@
+﻿@model MyMvcApp.Models.Grade
+
+@{
+    ViewData["Title"] = "Create Grade";
+}
+
+<h1>Create Grade</h1>
+
+@if (Model.TaskItem != null)
+{
+    <div class="alert alert-info">
+        <p><strong>Task:</strong> @Model.TaskItem.Title</p>
+    </div>
+}
+
+@if (Model.Student != null)
+{
+    <div class="alert alert-secondary">
+        <p><strong>Student:</strong> @Model.Student.Email</p>
+    </div>
+}
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="TaskItemId" />
+            <input type="hidden" asp-for="StudentId" />
+
+            <div class="mb-3">
+                <label asp-for="Value" class="form-label">Grade Value</label>
+                <input asp-for="Value" class="form-control" min="0" max="100" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MentorComment" class="form-label">Mentor Comment</label>
+                <textarea asp-for="MentorComment" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="MentorComment" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Grade</button>
+
+            <a asp-controller="Submissions"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Back to Submissions
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

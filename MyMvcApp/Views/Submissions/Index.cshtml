@@ -61,6 +61,13 @@
                         Review
                     </a>
 
+                    <a asp-controller="Grades"
+                       asp-action="Create"
+                       asp-route-submissionId="@item.Id"
+                       class="btn btn-sm btn-success">
+                        Grade
+                    </a>
+
                     <a asp-action="Details"
                        asp-route-id="@item.Id"
                        class="btn btn-sm btn-info">

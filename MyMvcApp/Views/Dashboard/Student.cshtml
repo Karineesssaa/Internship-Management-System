@@ -4,9 +4,56 @@
 
 <h1>Student Dashboard</h1>
 
-<p>Welcome, Student.</p>
+<p class="text-muted">Student workspace</p>
 
-<ul>
-    <li><a asp-controller="TaskItems" asp-action="MyTasks">My Tasks</a></li>
-    <li><a asp-controller="Users" asp-action="EditProfile">Edit My Profile</a></li>
-</ul>
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">My Tasks</h5>
+                <p class="card-text">View assigned tasks and submit results.</p>
+                <a asp-controller="TaskItems" asp-action="MyTasks" class="btn btn-primary">
+                    Open My Tasks
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">My Grades</h5>
+                <p class="card-text">View grades and mentor comments.</p>
+                <a asp-controller="Grades" asp-action="MyGrades" class="btn btn-primary">
+                    View My Grades
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">My Progress</h5>
+                <p class="card-text">Track task progress and average grade.</p>
+                <a asp-controller="Dashboard" asp-action="MyProgress" class="btn btn-success">
+                    View Progress
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Edit Profile</h5>
+                <p class="card-text">Update your profile information.</p>
+                <a asp-controller="Users" asp-action="EditProfile" class="btn btn-secondary">
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyMvcApp.Data;
 using MyMvcApp.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyMvcApp.Controllers
 {
@@ -117,6 +118,22 @@ namespace MyMvcApp.Controllers
             }
 
             return View(taskItem);
+        }
+
+        // GET: TaskItems/MentorTasks
+        [Authorize(Roles = "Mentor,Admin")]
+        public async Task<IActionResult> MentorTasks()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var tasks = await _context.TaskItems
+                .Include(t => t.InternshipGroup)
+                .Include(t => t.AssignedToUser)
+                .Include(t => t.CreatedByUser)
+                .Where(t => t.CreatedByUserId == userId)
+                .ToListAsync();
+
+            return View(tasks);
         }
 
         // GET: TaskItems/Create

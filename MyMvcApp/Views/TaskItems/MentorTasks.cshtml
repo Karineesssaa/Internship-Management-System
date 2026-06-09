@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MyMvcApp.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "My Created Tasks";
+}
+
+<h1>My Created Tasks</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Task</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Assigned Student</th>
+            <th>Group</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.Priority</td>
+                <td>@item.Status</td>
+                <td>@item.Deadline?.ToString("dd.MM.yyyy")</td>
+                <td>@item.AssignedToUser?.Email</td>
+                <td>@item.InternshipGroup?.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

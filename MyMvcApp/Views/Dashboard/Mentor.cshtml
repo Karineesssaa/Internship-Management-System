@@ -4,9 +4,44 @@
 
 <h1>Mentor Dashboard</h1>
 
-<p>Welcome, Mentor.</p>
+<p class="text-muted">Mentor workspace</p>
 
-<ul>
-    <li><a asp-controller="TaskItems" asp-action="Index">View Tasks</a></li>
-    <li><a asp-controller="TaskItems" asp-action="Create">Create Task</a></li>
-</ul>
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">My Created Tasks</h5>
+                <p class="card-text">View created tasks and add new tasks for students.</p>
+                <a asp-controller="TaskItems" asp-action="MentorTasks" class="btn btn-primary">
+                    Open Tasks
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Submissions</h5>
+                <p class="card-text">Review student submissions and task results.</p>
+                <a asp-controller="Submissions" asp-action="Index" class="btn btn-primary">
+                    View Submissions
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Grades</h5>
+                <p class="card-text">View and edit grades for submitted tasks.</p>
+                <a asp-controller="Grades" asp-action="Index" class="btn btn-primary">
+                    View Grades
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
